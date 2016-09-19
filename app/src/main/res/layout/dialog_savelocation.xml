@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llFilterChoice"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/margin_10"
+    android:layout_marginRight="@dimen/margin_10"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_8"
+    android:visibility="visible">
+
+    <EditText
+        android:id="@+id/edtLocationName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/please_enter_location_name"
+        android:imeOptions="actionDone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:background="@drawable/ripple_layout_w"
+        android:clickable="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_5"
+            android:text="@string/address_b"
+            android:textColor="@color/color_Black"
+            android:textSize="@dimen/textsize_18"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_Black"
+            android:textSize="@dimen/textsize_18"/>
+    </LinearLayout>
+
+</LinearLayout>
