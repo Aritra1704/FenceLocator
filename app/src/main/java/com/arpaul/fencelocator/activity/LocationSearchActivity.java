@@ -28,7 +28,12 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopupType;
 import com.arpaul.fencelocator.R;
+import com.arpaul.fencelocator.common.AppPreference;
 import com.arpaul.fencelocator.common.ApplicationInstance;
+import com.arpaul.fencelocator.dataAccess.FLCPConstants;
+import com.arpaul.fencelocator.dataAccess.InsertDataType;
+import com.arpaul.fencelocator.dataAccess.InsertLoader;
+import com.arpaul.fencelocator.dataObject.PrefLocationDO;
 import com.arpaul.gpslibrary.fetchAddressGeoCode.AddressConstants;
 import com.arpaul.gpslibrary.fetchAddressGeoCode.AddressDO;
 import com.arpaul.gpslibrary.fetchAddressGeoCode.FetchAddressLoader;
@@ -71,6 +76,8 @@ public class LocationSearchActivity extends BaseActivity implements GPSCallback,
     private boolean isGpsEnabled;
     private boolean ispermissionGranted = false;
     private MaterialDialog mdFilter;
+    private static int HANDLER_TIME_OUT = 2500;
+    private int locationId = 1;
 
     @Override
     public void initialize() {
@@ -172,6 +179,47 @@ public class LocationSearchActivity extends BaseActivity implements GPSCallback,
                         if(!TextUtils.isEmpty(edtLocationName.getText().toString())){
                             String locationName = edtLocationName.getText().toString();
 
+                            Uri CONTENT_URI = Uri.parse(FLCPConstants.CONTENT + FLCPConstants.CONTENT_AUTHORITY + FLCPConstants.DELIMITER +
+                                    FLCPConstants.PREFERRED_LOCATION_TABLE_NAME + FLCPConstants.DELIMITER);
+                            Cursor cursor = getContentResolver().query(CONTENT_URI,
+                                    new String[]{"MAX(" + PrefLocationDO.LOCATIONID + ") AS " + PrefLocationDO.MAXLOCATIONID},
+                                    null,
+                                    null,
+                                    null);
+
+                            if (cursor != null && cursor.moveToFirst() && cursor.getCount() > 0)
+                                locationId = cursor.getInt(cursor.getColumnIndex(PrefLocationDO.MAXLOCATIONID)) + 1;
+
+                            PrefLocationDO objPrefLocationDO = new PrefLocationDO();
+                            objPrefLocationDO.LocationId = locationId;
+                            objPrefLocationDO.LocationName = locationName;
+                            objPrefLocationDO.Address = address;
+                            objPrefLocationDO.Latitude = currentLatLng.latitude;
+                            objPrefLocationDO.Longitude = currentLatLng.longitude;
+
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(InsertLoader.BUNDLE_INSERTLOADER,objPrefLocationDO);
+
+                            getSupportLoaderManager().initLoader(ApplicationInstance.LOADER_SAVE_LOCATION, bundle, LocationSearchActivity.this).forceLoad();
+
+                            /*if(uri != null){
+                                showCustomDialog(getString(R.string.success),getString(R.string.location_successfuly_added),null,null,getString(R.string.location_successfuly_added),false);
+                                new Handler().postDelayed(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        hideCustomDialog();
+                                        dialog.dismiss();
+
+                                        preference.saveStringInPreference(AppPreference.PREF_LOC, ""+locationId);
+                                        Intent resultIntent = new Intent();
+                                        resultIntent.putExtra("address",address);
+                                        setResult(1001);
+
+                                        finish();
+                                    }
+                                }, HANDLER_TIME_OUT);
+                            }*/
                         }
                     }
                 });
@@ -356,8 +404,8 @@ public class LocationSearchActivity extends BaseActivity implements GPSCallback,
             case ApplicationInstance.LOADER_FETCH_LOCATION:
                 return new FetchGeoCodeLoader(this, edtAddress.getText().toString());
 
-//            case ApplicationInstance.LOADER_SAVE_LOCATION:
-//                return new InsertLoader(this, InsertDataType.INSERT_PREF_LOC, args);
+            case ApplicationInstance.LOADER_SAVE_LOCATION:
+                return new InsertLoader(this, InsertDataType.INSERT_PREF_LOC, args);
 
             default:
                 return null;
@@ -365,7 +413,7 @@ public class LocationSearchActivity extends BaseActivity implements GPSCallback,
     }
 
     @Override
-    public void onLoadFinished(Loader loader, Object data) {
+    public void onLoadFinished(Loader loader, final Object data) {
         switch(loader.getId()){
             case ApplicationInstance.LOADER_FETCH_ADDRESS:
                 if(data instanceof AddressDO){
@@ -390,28 +438,28 @@ public class LocationSearchActivity extends BaseActivity implements GPSCallback,
                 }
                 break;
 
-//            case ApplicationInstance.LOADER_SAVE_LOCATION:
-//                if(data instanceof String){
-//                    if(data != null && !TextUtils.isEmpty((String) data)){
-//                        showCustomDialog(getString(R.string.success),getString(R.string.location_successfuly_added),null,null,getString(R.string.location_successfuly_added), CustomDialogType.DIALOG_SUCCESS_NO_BODY,false);
-//                        new Handler().postDelayed(new Runnable() {
-//
-//                            @Override
-//                            public void run() {
-//                                hideCustomDialog();
-////                            dialog.dismiss();//Need to think
-//
-//                                preference.saveStringInPreference(AppPreference.PREF_LOC, ""+locationId);
-//                                Intent resultIntent = new Intent();
-//                                resultIntent.putExtra("address",(String) data);
-//                                setResult(1001);
-//
-//                                finish();
-//                            }
-//                        }, HANDLER_TIME_OUT);
-//                    }
-//                }
-//                break;
+            case ApplicationInstance.LOADER_SAVE_LOCATION:
+                if(data instanceof String){
+                    if(data != null && !TextUtils.isEmpty((String) data)){
+                        showCustomDialog(getString(R.string.success),getString(R.string.location_successfuly_added),null,null,getString(R.string.location_successfuly_added), CustomPopupType.DIALOG_SUCCESS,false);
+                        new Handler().postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                hideCustomDialog();
+//                            dialog.dismiss();//Need to think
+
+                                preference.saveStringInPreference(AppPreference.PREF_LOC, ""+locationId);
+                                Intent resultIntent = new Intent();
+                                resultIntent.putExtra("address",(String) data);
+                                setResult(1001);
+
+                                finish();
+                            }
+                        }, HANDLER_TIME_OUT);
+                    }
+                }
+                break;
         }
     }
 

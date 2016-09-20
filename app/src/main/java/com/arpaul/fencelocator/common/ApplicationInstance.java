@@ -7,4 +7,7 @@ public class ApplicationInstance {
 
     public static final int LOADER_FETCH_ADDRESS        = 1;
     public static final int LOADER_FETCH_LOCATION       = 2;
+    public static final int LOADER_SAVE_LOCATION        = 3;
+
+    public static final String LOCK_APP_DB              = "LOCK_APP_DB";
 }

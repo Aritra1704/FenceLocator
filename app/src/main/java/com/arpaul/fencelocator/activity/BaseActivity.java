@@ -13,6 +13,7 @@ import com.arpaul.customalertlibrary.dialogs.CustomDialog;
 import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopupType;
 import com.arpaul.customalertlibrary.popups.statingDialog.PopupListener;
 import com.arpaul.fencelocator.R;
+import com.arpaul.fencelocator.common.AppPreference;
 
 /**
  * Created by Aritra on 19-09-2016.
@@ -22,6 +23,7 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
     public LayoutInflater baseInflater;
     public LinearLayout llBody;
     private CustomDialog cDialog;
+    public AppPreference preference;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,10 +32,17 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
 
         initialiseBaseControls();
 
+        bindBaseControls();
+
         initialize();
     }
 
     public abstract void initialize();
+
+    private void bindBaseControls(){
+        if(preference == null)
+            preference = new AppPreference(this);
+    }
 
     public void showSettingsAlert()
     {

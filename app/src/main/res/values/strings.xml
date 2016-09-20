@@ -10,7 +10,9 @@
     <string name="alert">Alert</string>
     <string name="failure">Failure</string>
     <string name="settings">Settings</string>
+    <string name="success">Success</string>
     <string name="gpssettings">GPS Settings</string>
+    <string name="location_successfuly_added">Your location successfully added.</string>
     <string name="gps_not_enabled">GPS is not enabled.So please enable GPS for better Location.</string>
     <string name="please_enter_proper_address">Please enter proper address</string>
     <string name="please_enter_location_name">Please enter location name.</string>
