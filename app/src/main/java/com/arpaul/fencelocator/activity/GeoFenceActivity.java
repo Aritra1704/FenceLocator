@@ -308,6 +308,8 @@ public class GeoFenceActivity extends BaseActivity implements
 
                         // Get the geofences used. Geofence data is hard coded in this sample.
                         populateGeofenceList();
+                    } else {
+                        showCurrentLocation();
                     }
                 }
                 break;
@@ -340,7 +342,7 @@ public class GeoFenceActivity extends BaseActivity implements
                 markerOptions.title("Your Location");
                 mMap.addMarker(markerOptions);
                 mMap.addMarker(markerOptions).showInfoWindow();
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,12.0f));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,15.0f));
             }
         } else {
             Toast.makeText(this, "Unable to fetch your current location please try again.", Toast.LENGTH_SHORT).show();
@@ -360,12 +362,12 @@ public class GeoFenceActivity extends BaseActivity implements
                     markerOptions.title(objPrefLocationDO.LocationName);
                     mMap.addMarker(markerOptions);
 //                    mMap.addMarker(markerOptions).showInfoWindow();
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngFarm,11.0f));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngFarm,15.0f));
 
                     //Instantiates a new CircleOptions object +  center/radius
                     CircleOptions circleOptions = new CircleOptions()
                             .center(latLngFarm)
-                            .radius(AppConstant.GEOFENCE_RADIUS_IN_METERS * 1000)
+                            .radius(AppConstant.GEOFENCE_RADIUS_IN_METERS)
                             .fillColor(ColorUtils.getColor(GeoFenceActivity.this, R.color.color_Light_Pink))
                             .strokeColor(ColorUtils.getColor(GeoFenceActivity.this, R.color.color_SkyBlue))
                             .strokeWidth(2);

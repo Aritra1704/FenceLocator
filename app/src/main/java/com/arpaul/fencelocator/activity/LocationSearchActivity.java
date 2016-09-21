@@ -352,7 +352,7 @@ public class LocationSearchActivity extends BaseActivity implements GPSCallback,
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                 markerOptions.title("Your Location");
                 mMap.addMarker(markerOptions);*/
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,16.0f));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,18.0f));
 
                 getSupportLoaderManager().initLoader(ApplicationInstance.LOADER_FETCH_ADDRESS, null, this).forceLoad();
             }

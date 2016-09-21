@@ -1,6 +1,7 @@
 package com.arpaul.fencelocator.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -158,7 +159,11 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
     }
 
     public void dialogYesClick(String from) {
-
+        if(from.contains(getString(R.string.settings))){
+            Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+            hideCustomDialog();
+        }
     }
 
     public void dialogNoClick(String from) {
