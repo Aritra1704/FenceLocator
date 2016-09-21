@@ -393,6 +393,7 @@ public class LocationSearchActivity extends BaseActivity implements GPSCallback,
     public void onCameraChange(CameraPosition cameraPosition) {
 
         currentLatLng = cameraPosition.target;
+        gpsUtills.isDeviceConfiguredProperly();
     }
 
     @Override

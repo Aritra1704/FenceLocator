@@ -1,13 +1,18 @@
 package com.arpaul.fencelocator.activity;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.arpaul.customalertlibrary.dialogs.CustomDialog;
 import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopupType;
@@ -24,6 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
     public LinearLayout llBody;
     private CustomDialog cDialog;
     public AppPreference preference;
+    public Typeface tfRegular,tfBold;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -165,8 +171,44 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
         }
     }
 
+    public static ViewGroup getParentView(View v) {
+        ViewGroup vg = null;
+
+        if(v != null)
+            vg = (ViewGroup) v.getRootView();
+
+        return vg;
+    }
+
+    public static void applyTypeface(ViewGroup v, Typeface f, int style) {
+        if(v != null) {
+            int vgCount = v.getChildCount();
+            for(int i=0;i<vgCount;i++) {
+                if(v.getChildAt(i) == null) continue;
+                if(v.getChildAt(i) instanceof ViewGroup)
+                    applyTypeface((ViewGroup)v.getChildAt(i), f, style);
+                else {
+                    View view = v.getChildAt(i);
+                    if(view instanceof TextView)
+                        ((TextView)(view)).setTypeface(f, style);
+                    else if(view instanceof EditText)
+                        ((EditText)(view)).setTypeface(f, style);
+                    else if(view instanceof Button)
+                        ((Button)(view)).setTypeface(f, style);
+                }
+            }
+        }
+    }
+
+    private void createTypeFace(){
+        tfRegular  = Typeface.createFromAsset(this.getAssets(),"fonts/Myriad Pro Regular.ttf");
+        tfBold       = Typeface.createFromAsset(this.getAssets(),"fonts/Myriad Pro Regular.ttf");
+    }
+
     private void initialiseBaseControls(){
         baseInflater            = 	this.getLayoutInflater();
         llBody = (LinearLayout) findViewById(R.id.llBody);
+
+        createTypeFace();
     }
 }
