@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopupType;
 import com.arpaul.customalertlibrary.popups.statingDialog.PopupListener;
 import com.arpaul.fencelocator.R;
 import com.arpaul.fencelocator.common.AppPreference;
+import com.arpaul.utilitieslib.UnCaughtException;
 
 /**
  * Created by Aritra on 19-09-2016.
@@ -33,7 +35,9 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        Thread.setDefaultUncaughtExceptionHandler(new UnCaughtException(BaseActivity.this,"aritrarpal@gmail.com",getString(R.string.app_name)));
         setContentView(R.layout.activity_base);
 
         initialiseBaseControls();
