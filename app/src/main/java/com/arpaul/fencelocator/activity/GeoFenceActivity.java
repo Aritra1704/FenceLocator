@@ -195,7 +195,7 @@ public class GeoFenceActivity extends BaseActivity implements
             else
                 getSupportLoaderManager().initLoader(ApplicationInstance.LOADER_FETCH_ALL_LOCATION, null, this);
 
-        } else {
+        } //else {
             mLocationRequest = LocationRequest.create();
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             mLocationRequest.setInterval(AppConstant.LOCATION_UPDATES_IN_SECONDS * 1000); // Update location every second
@@ -206,7 +206,7 @@ public class GeoFenceActivity extends BaseActivity implements
                 }
             } else
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        }
+        //}
     }
 
     @Override
@@ -226,6 +226,9 @@ public class GeoFenceActivity extends BaseActivity implements
         //txtOutput.setText(location.toString());
 
         currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        Toast.makeText(GeoFenceActivity.this, "Lat: "+currentLatLng.latitude+" Lon: "+currentLatLng.longitude, Toast.LENGTH_SHORT).show();
+        showLocations();
     }
 
     @Override

@@ -6,7 +6,7 @@ package com.arpaul.fencelocator.common;
 
 public class AppConstant {
 
-    public static final float GEOFENCE_RADIUS_IN_METERS = 10; // 1 mile, 1.6 km
+    public static final float GEOFENCE_RADIUS_IN_METERS = 50; // 1 mile, 1.6 km
 
     /**
      * Used to set an expiration time for a geofence. After this amount of time Location Services
